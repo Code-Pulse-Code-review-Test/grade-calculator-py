@@ -3,7 +3,14 @@
 import csv
 import sys
 
-from grades.gpa import ModuleResult, calculate_gpa, class_for_gpa, failed_modules
+from grades.gpa import (
+    ModuleResult,
+    best_module,
+    calculate_gpa,
+    class_for_gpa,
+    failed_modules,
+    weighted_average,
+)
 from grades.grading import letter_grade
 
 
@@ -25,6 +32,11 @@ def main(argv):
 
     gpa = calculate_gpa(results)
     print(f"\nGPA: {gpa} ({class_for_gpa(gpa)})")
+    print(f"Average mark: {weighted_average(results)}")
+
+    best = best_module(results)
+    if best:
+        print(f"Best module: {best.code} ({best.mark:.1f})")
 
     failed = failed_modules(results)
     if failed:

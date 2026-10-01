@@ -2,7 +2,14 @@
 
 import unittest
 
-from grades.gpa import ModuleResult, calculate_gpa, class_for_gpa, failed_modules
+from grades.gpa import (
+    ModuleResult,
+    best_module,
+    calculate_gpa,
+    class_for_gpa,
+    failed_modules,
+    weighted_average,
+)
 from grades.grading import grade_point, letter_grade
 
 
@@ -43,6 +50,18 @@ class GpaTest(unittest.TestCase):
         """Degree class thresholds."""
         self.assertEqual(class_for_gpa(3.8), "First Class")
         self.assertEqual(class_for_gpa(1.5), "Fail")
+
+    def test_weighted_average(self):
+        """Credits weight the average mark."""
+        results = [ModuleResult("A", 3, 80), ModuleResult("B", 1, 40)]
+        self.assertEqual(weighted_average(results), 70.0)
+        self.assertEqual(weighted_average([]), 0.0)
+
+    def test_best_module(self):
+        """Highest mark wins, empty list gives None."""
+        results = [ModuleResult("A", 3, 55), ModuleResult("B", 2, 81)]
+        self.assertEqual(best_module(results).code, "B")
+        self.assertIsNone(best_module([]))
 
 
 if __name__ == "__main__":
