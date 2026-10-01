@@ -23,6 +23,19 @@ def calculate_gpa(results):
     return round(weighted / total_credits, 2)
 
 
+def weighted_average(results):
+    """Credit-weighted average mark, rounded to one decimal."""
+    total_credits = sum(r.credits for r in results)
+    if total_credits == 0:
+        return 0.0
+    return round(sum(r.mark * r.credits for r in results) / total_credits, 1)
+
+
+def best_module(results):
+    """The module with the highest mark, or None if there are none."""
+    return max(results, key=lambda r: r.mark, default=None)
+
+
 def failed_modules(results):
     """Codes of modules with an F."""
     return [r.code for r in results if grade_point(r.mark) == 0.0]
